@@ -59,6 +59,7 @@ class MmuSensorManager:
             self.mmu.SENSOR_TENSION,
             self.mmu.SENSOR_COMPRESSION
         ])
+        self.endstop_names.extend([self.get_gate_sensor_name(self.mmu.SENSOR_GEAR_TOUCH, i) for i in range(self.mmu.num_gates)]) # include "mmu_gear_touch_XXX" sensors
         if self.mmu.mmu_machine.num_units > 1:
             for i in range(self.mmu.mmu_machine.num_units):
                 self.endstop_names.append(self.get_unit_sensor_name(self.mmu.SENSOR_GATE, i))

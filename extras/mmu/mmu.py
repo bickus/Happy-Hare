@@ -4610,8 +4610,10 @@ class Mmu:
                 raise MmuError("Cannot home to extruder using 'collision' method because encoder is not configured or disabled!")
 
         else:
-            self.log_debug("Homing to extruder '%s' endstop, up to %.1fmm" % (self.extruder_homing_endstop, max_length))
-            actual,homed,measured,_ = self.trace_filament_move("Homing filament to extruder", max_length, motor="gear", homing_move=1, endstop_name=self.extruder_homing_endstop)
+            endstop_name_correct = self.sensor_manager.get_mapped_endstop_name(self.extruder_homing_endstop)
+
+            self.log_debug("Homing to extruder '%s' endstop, up to %.1fmm" % (endstop_name_correct, max_length))
+            actual,homed,measured,_ = self.trace_filament_move("Homing filament to extruder", max_length, motor="gear", homing_move=1, endstop_name=endstop_name_correct)
             if homed:
                 self.log_debug("Extruder endstop reached after %.1fmm (measured %.1fmm)" % (actual, measured))
                 self._set_filament_pos_state(self.FILAMENT_POS_HOMED_ENTRY)
