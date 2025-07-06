@@ -427,7 +427,6 @@ class MmuToolHead(toolhead.ToolHead, object):
             printer_extruder.extruder_stepper = self.mmu_extruder_stepper
             self.mmu_extruder_stepper.stepper.set_trapq(printer_extruder.get_trapq())
         else:
-            logging.INFO("TOOLHEAD: %s" % self.printer_toolhead)
             logging.INFO("EXTRUDER: %s" % printer_extruder.name)
             self.mmu_extruder_stepper = printer_extruder.extruder_stepper
 
