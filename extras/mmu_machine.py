@@ -37,7 +37,7 @@ SELECTOR_STEPPER_CONFIG = "stepper_mmu_selector" # Optional
 GEAR_STEPPER_CONFIG     = "stepper_mmu_gear"
 
 SHAREABLE_STEPPER_PARAMS = ['rotation_distance', 'gear_ratio', 'microsteps', 'full_steps_per_rotation']
-OTHER_STEPPER_PARAMS     = ['step_pin', 'dir_pin', 'enable_pin', 'endstop_pin', 'rotation_distance', 'pressure_advance', 'pressure_advance_smooth_time','pressure_advance_model','linear_advance','nonlinear_offset','linearization_velocity','nozzle_diameter']
+OTHER_STEPPER_PARAMS     = ['step_pin', 'dir_pin', 'enable_pin', 'endstop_pin', 'rotation_distance', 'pressure_advance', 'pressure_advance_smooth_time']
 
 SHAREABLE_TMC_PARAMS     = ['run_current', 'hold_current', 'interpolate', 'sense_resistor', 'stealthchop_threshold']
 
@@ -401,7 +401,6 @@ class MmuToolHead(toolhead.ToolHead, object):
             for i in SHAREABLE_STEPPER_PARAMS + OTHER_STEPPER_PARAMS:
                 if config.fileconfig.has_option('extruder', i):
                     self.old_ext_options[i] = config.fileconfig.get('extruder', i)
-                    logging.info("MmuExtruderStepper old: %s=%s" % (i,self.old_ext_options))
                     config.fileconfig.remove_option('extruder', i)
 
         self.printer.register_event_handler('klippy:connect', self.handle_connect)
@@ -976,14 +975,14 @@ class MmuExtruderStepper(ExtruderStepper, object):
             mcu_endstop.add_stepper(self.stepper)
 
     # Override to add QUIET option to control console logging
-    #def cmd_SET_PRESSURE_ADVANCE(self, gcmd):
-    #    pressure_advance = gcmd.get_float('ADVANCE', self.pressure_advance, minval=0.)
-    #    smooth_time = gcmd.get_float('SMOOTH_TIME', self.pressure_advance_smooth_time, minval=0., maxval=.200)
-    #    self._set_pressure_advance(pressure_advance, smooth_time)
-    #    msg = "pressure_advance: %.6f\n" "pressure_advance_smooth_time: %.6f" % (pressure_advance, smooth_time)
-    #    self.printer.set_rollover_info(self.name, "%s: %s" % (self.name, msg))
-    #    if not gcmd.get_int('QUIET', 0, minval=0, maxval=1):
-    #        gcmd.respond_info(msg, log=False)
+    def cmd_SET_PRESSURE_ADVANCE(self, gcmd):
+        pressure_advance = gcmd.get_float('ADVANCE', self.pressure_advance, minval=0.)
+        smooth_time = gcmd.get_float('SMOOTH_TIME', self.pressure_advance_smooth_time, minval=0., maxval=.200)
+        self._set_pressure_advance(pressure_advance, smooth_time)
+        msg = "pressure_advance: %.6f\n" "pressure_advance_smooth_time: %.6f" % (pressure_advance, smooth_time)
+        self.printer.set_rollover_info(self.name, "%s: %s" % (self.name, msg))
+        if not gcmd.get_int('QUIET', 0, minval=0, maxval=1):
+            gcmd.respond_info(msg, log=False)
 
 class DummyRail:
     def __init__(self):
