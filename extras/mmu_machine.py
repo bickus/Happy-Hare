@@ -21,7 +21,7 @@
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.
 #
-import logging, importlib, math, os, time, re
+import logging, importlib, math, os, time, re, json
 
 # Klipper imports
 import stepper, chelper, toolhead
@@ -427,8 +427,8 @@ class MmuToolHead(toolhead.ToolHead, object):
             printer_extruder.extruder_stepper = self.mmu_extruder_stepper
             self.mmu_extruder_stepper.stepper.set_trapq(printer_extruder.get_trapq())
         else:
-            logging.info("TOOLHEAD: %s" % self.printer_toolhead)
-            logging.info("EXTRUDER: %s" % printer_extruder.name)
+            logging.info("TOOLHEAD: %s" % json.dumps(self.printer_toolhead))
+            logging.info("EXTRUDER: %s" % json.dumps(printer_extruder.name))
             self.mmu_extruder_stepper = printer_extruder.extruder_stepper
 
     # Ensure the correct number of axes for convenience - MMU only has two
