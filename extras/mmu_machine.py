@@ -401,6 +401,7 @@ class MmuToolHead(toolhead.ToolHead, object):
             for i in SHAREABLE_STEPPER_PARAMS + OTHER_STEPPER_PARAMS:
                 if config.fileconfig.has_option('extruder', i):
                     self.old_ext_options[i] = config.fileconfig.get('extruder', i)
+                    logging.info("MmuExtruderStepper old: %s=%s" % (i,self.old_ext_options))
                     config.fileconfig.remove_option('extruder', i)
 
         self.printer.register_event_handler('klippy:connect', self.handle_connect)
