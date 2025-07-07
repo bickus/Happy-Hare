@@ -2984,12 +2984,12 @@ class Mmu:
             if go_slower(self.sync_feedback_last_state, self.sync_feedback_last_direction):
                 # Expanded when extruding or compressed when retracting, so decrease the rotation distance of gear stepper to speed it up
                 multiplier = 1. - (abs(1. - self.sync_multiplier_low) * abs(self.sync_feedback_last_state))
-                self.log_trace("Slowing gear motor down")
+                self.log_always("Slowing gear motor down")
             else:
                 # Compressed when extruding or expanded when retracting, so increase the rotation distance of gear stepper to slow it down
                 multiplier = 1. + (abs(1. - self.sync_multiplier_high) * abs(self.sync_feedback_last_state))
-                self.log_trace("Speeding gear motor up")
-        self.log_trace("Updated sync multiplier: %.4f" % multiplier)
+                self.log_always("Speeding gear motor up")
+        self.log_always("Updated sync multiplier: %.4f" % multiplier)
         self._set_rotation_distance(self._get_rotation_distance(self.gate_selected) / multiplier)
 
     def _get_current_sync_state(self):
@@ -6507,10 +6507,10 @@ class Mmu:
                         if tool == self.tool_selected and self.ttg_map[tool] == self.gate_selected and self.filament_pos == self.FILAMENT_POS_LOADED:
                             self.log_always("Tool T%d is already loaded" % tool)
                             # CUSTOM
-                            self.log_always("Before fixing HH's motor sync. Sync is enabled: %s; operational: %s, state: %s", (self.sync_feedback_enable, self.sync_feedback_operational, self._get_sync_feedback_string(detail=True)))
+                            self.log_always("Before fixing HH's motor sync. Sync is enabled: %s; operational: %s, state: %s" % (self.sync_feedback_enable, self.sync_feedback_operational, self._get_sync_feedback_string(detail=True)))
                             self._handle_mmu_synced()
                             self._update_sync_starting_state()
-                            self.log_always("After fixing HH's motor sync. Sync is enabled: %s; operational: %s, state: %s", (self.sync_feedback_enable, self.sync_feedback_operational, self._get_sync_feedback_string(detail=True)))
+                            self.log_always("After fixing HH's motor sync. Sync is enabled: %s; operational: %s, state: %s" % (self.sync_feedback_enable, self.sync_feedback_operational, self._get_sync_feedback_string(detail=True)))
                             # END CUSTOM
                             return
 
