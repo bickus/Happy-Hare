@@ -430,7 +430,7 @@ class MmuToolHead(toolhead.ToolHead, object):
         else:
             #logging.info("TOOLHEAD: %s" % json.dumps(self.printer_toolhead))
             logging.info("EXTRUDER NO HOMING_EXTRUDER: %s" % json.dumps(printer_extruder.name))
-            self.mmu_extruder_stepper = printer_extruder.mmu_extruder_stepper
+            self.mmu_extruder_stepper = printer_extruder.extruder_stepper
 
     # Ensure the correct number of axes for convenience - MMU only has two
     # Also, handle case when gear rail is synced to extruder
