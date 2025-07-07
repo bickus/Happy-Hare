@@ -6506,6 +6506,12 @@ class Mmu:
                         # Check if we are already loaded
                         if tool == self.tool_selected and self.ttg_map[tool] == self.gate_selected and self.filament_pos == self.FILAMENT_POS_LOADED:
                             self.log_always("Tool T%d is already loaded" % tool)
+                            # CUSTOM
+                            self.log_always("Before fixing HH's motor sync. Sync is enabled: %s; operational: %s, state: %s", (self.sync_feedback_enable, self.sync_feedback_operational, self._get_sync_feedback_string(detail=True)))
+                            self._handle_mmu_synced()
+                            self._update_sync_starting_state()
+                            self.log_always("After fixing HH's motor sync. Sync is enabled: %s; operational: %s, state: %s", (self.sync_feedback_enable, self.sync_feedback_operational, self._get_sync_feedback_string(detail=True)))
+                            # END CUSTOM
                             return
 
                         # Load only case
