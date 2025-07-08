@@ -518,7 +518,7 @@ class MmuToolHead(toolhead.ToolHead, object):
         if new_sync_mode in [self.EXTRUDER_SYNCED_TO_GEAR, self.EXTRUDER_ONLY_ON_GEAR]:
             driving_toolhead = self.mmu_toolhead
             following_toolhead = self.printer_toolhead
-            following_steppers = [self.printer_toolhead.get_extruder().extruder_stepper.stepper]
+            following_steppers = [self.printer_toolhead.get_extruder().get_extruder_steppers()[0].stepper]
             self._prev_trapq = following_steppers[0].get_trapq()
             driving_trapq = driving_toolhead.get_trapq()
             s_alloc = ffi_lib.cartesian_stepper_alloc(b"y")
@@ -570,7 +570,7 @@ class MmuToolHead(toolhead.ToolHead, object):
         if self.sync_mode in [self.EXTRUDER_SYNCED_TO_GEAR, self.EXTRUDER_ONLY_ON_GEAR]:
             driving_toolhead = self.mmu_toolhead
             following_toolhead = self.printer_toolhead
-            following_steppers = [self.printer_toolhead.get_extruder().extruder_stepper.stepper]
+            following_steppers = [self.printer_toolhead.get_extruder().get_extruder_steppers()[0].stepper]
             pos = [self.printer_toolhead.get_position()[3], 0., 0.]
 
             # Restore previously unused/unwanted gear steppers
