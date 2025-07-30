@@ -131,7 +131,7 @@ class MmuRunoutHelper:
         else: # Remove or Runout detected
             self.min_event_systime = self.reactor.NEVER
             if is_printing and self.runout_suspended is False and self.runout_gcode:
-                #logging.info("MMU: filament sensor %s: runout event detected, Eventtime %.2f" % (self.name, eventtime))
+                logging.info("MMU: filament sensor %s: runout event detected, Eventtime %.2f" % (self.name, eventtime))
                 self.reactor.register_callback(lambda reh: self._runout_event_handler(eventtime))
             elif self.remove_gcode and (not is_printing or self.insert_remove_in_print):
                 # Just a "remove" event
@@ -231,7 +231,13 @@ class MmuSensors:
                 config.fileconfig.add_section(section)
                 config.fileconfig.set(section, "switch_pin", switch_pin)
                 config.fileconfig.set(section, "pause_on_runout", "False")
+                config.fileconfig.set(section, "pause_on_runout", "False")
+                config.fileconfig.set(section, "event_delay", "3")
+                config.fileconfig.set(section, "debounce_delay", "0.1")
+                
                 fs = self.printer.load_object(config, section)
+
+                logging.info("MMU: filament_switch_sensor %s created with debounce_delay" % (sensor))
 
                 # Replace with custom runout_helper because of state specific behavior
                 insert_gcode = ("%s SENSOR=%s%s" % (self.INSERT_GCODE, name, (" GATE=%d" % gate) if gate is not None else "")) if insert else None
