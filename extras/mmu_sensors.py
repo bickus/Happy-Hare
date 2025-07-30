@@ -233,7 +233,7 @@ class MmuSensors:
                 config.fileconfig.set(section, "pause_on_runout", "False")
                 config.fileconfig.set(section, "pause_on_runout", "False")
                 config.fileconfig.set(section, "event_delay", "3")
-                config.fileconfig.set(section, "debounce_delay", "0.1")
+                config.fileconfig.set(section, "debounce_delay", "0.04")
                 
                 fs = self.printer.load_object(config, section)
 
